@@ -28,7 +28,7 @@ LMLMLMLMM
 
 3 3 E
 
-MMRMMRMRRM```
+MMRMMRMRRM ```
 
 Expected Output:
 
