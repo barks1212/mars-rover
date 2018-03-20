@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const Mission = require('../mission');
 
-describe.only('Mission', () => {
+describe('Mission', () => {
   it('creates a landing plateau', () => {
     const mission = new Mission();
     expect(mission.plateau).to.eql({x:5, y:5});
