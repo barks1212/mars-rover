@@ -66,6 +66,10 @@ Install all project dependancies using:
 
 ```npm install```
 
+The algorithm in its entirety can be run with under the Mission class with the method:
+
+```mission.launchMission()```
+
 # Testing:
 
 To test:

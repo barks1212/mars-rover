@@ -1,15 +1,25 @@
 class Rover {
   constructor(x, y, heading) {
-    this.x = x;
-    this.y = y;
+    this.x = x === undefined ? Math.round(Math.random() * (5 - 0)) : x;
+    this.y = y === undefined ? Math.round(Math.random() * (5 - 0)) : y;
     this.heading = heading;
   }
 
-  getRoverPosition() {
+  getPosition() {
     return `${this.x} ${this.y} ${this.heading}`;
   }
 
-  rotateRover(command) {
+  followInstructions(commandStr) {
+    const commandArr = commandStr.split('');
+    commandArr.forEach((command) => {
+      command = command.toUpperCase();
+      if (command === 'M') this.move();
+      if (command === 'L' || command === 'R') this.rotate(command);
+    });
+  }
+
+  rotate(command) {
+    command = command.toUpperCase();
     const rotateHandler = {
       N: { L: 'W', R: 'E' },
       S: { L: 'E', R: 'W' },
@@ -19,7 +29,7 @@ class Rover {
     this.heading = rotateHandler[this.heading][command];
   }
 
-  moveRover() {
+  move() {
     let x = 0, y = 0;
 
     switch (this.heading) {
