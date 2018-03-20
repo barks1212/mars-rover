@@ -2,7 +2,7 @@
   "name": "mars-rover",
   "version": "1.0.0",
   "description": "",
-  "main": "mission.js",
+  "main": "src/mission.js",
   "scripts": {
     "test": "mocha ./*spec"
   },

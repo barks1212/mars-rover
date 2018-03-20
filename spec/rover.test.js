@@ -1,5 +1,6 @@
+
 const { expect } = require('chai');
-const Rover = require('../rover');
+const Rover = require('../src/rover');
 
 describe('Rover', () => {
   it('creates a new rover and can retrieve its initial position, returned as a string', () => {
@@ -15,24 +16,33 @@ describe('Rover', () => {
 
   it('moves the rover forward to a new position', () => {
     const rover = new Rover(5, 5, 'N');
-    rover.move();
+    rover.move(6, 6);
     expect(rover.getPosition()).to.equal('5 6 N');
   });
 
   it('combines rotate and move to go to a new position', () => {
     const rover = new Rover(5, 5,'N');
     rover.rotate('L');
-    rover.move();
+    rover.move(6, 6);
     expect(rover.getPosition()).to.equal('4 5 W');
-    rover.move();
+    rover.move(6, 6);
     rover.rotate('R');
-    rover.move();
+    rover.move(6, 6);
     expect(rover.getPosition()).to.equal('3 6 N');
   });
 
-  it('takes a string of instructions and executes them', () => {
+  it('wont allow a rover to move out of bounds and the rover maintains its current position', () => {
     const rover = new Rover(5, 5, 'N');
-    rover.followInstructions('LMMLMMRRRM');
-    expect(rover.getPosition()).to.equal('4 3 E');
+    expect(rover.move(5, 5)).to.equal('Next move goes out of bounds! Aborting move!');
+    expect(rover.getPosition()).to.equal('5 5 N');
+  });
+
+  it('wont allow a rover to crash into another rover and maintains its position', () => {
+    const rovers = [
+      {x: 2, y:3, heading: 'N'},
+    ];
+    const rover = new Rover(2, 2, 'N');
+    expect(rover.move(5, 5, rovers)).to.equal('Imminent collision! Aborting move!');
+    expect(rover.getPosition()).to.equal('2 2 N');
   });
 });

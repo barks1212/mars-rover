@@ -1,8 +1,14 @@
+
 const { expect } = require('chai');
-const Mission = require('../mission');
+const Mission = require('../src/mission');
 
 describe('Mission', () => {
   it('creates a landing plateau', () => {
+    const mission = new Mission('4 4');
+    expect(mission.plateau).to.eql({x:4, y:4});
+  });
+
+  it('defaults to a 5x5 plateau if bounds are undefined', () => {
     const mission = new Mission();
     expect(mission.plateau).to.eql({x:5, y:5});
   });
@@ -23,6 +29,41 @@ describe('Mission', () => {
     const mission = new Mission();
     mission.addRover(3, 3);
     expect(mission.addRover(3, 3)).to.equal('ERROR: Imminent collision!');
+  });
+
+  it('provides rovers with a string on instructions', () => {
+    const mission = new Mission();
+    mission.addRover(3, 3, 'N');
+    mission.giveRoverInstructions('MLM', mission.rovers[0]);
+    expect(mission.getFinalRoverPositions()).to.equal('2 4 W');
+  });
+
+  it('returns an error message when passed instructions that arent a string', () => {
+    const mission = new Mission();
+    mission.addRover(3, 3, 'N');
+    expect(mission.giveRoverInstructions(123, mission.rovers[0])).to.equal('invalid instructions');
+  });
+
+  it('skips seperate invalid instructions', () => {
+    const mission = new Mission();
+    mission.addRover(3, 3, 'N');
+    mission.giveRoverInstructions('MQM', mission.rovers[0]);
+    expect(mission.getFinalRoverPositions()).to.equal('3 5 N');
+  });
+
+  it('skips instructions that lead the rover to go out of bounds', () => {
+    const mission = new Mission();
+    mission.addRover(5, 5, 'N');
+    mission.giveRoverInstructions('MLM', mission.rovers[0]);
+    expect(mission.getFinalRoverPositions()).to.equal('4 5 W');
+  });
+
+  it('skips instructions that lead the rover to crash into another', () => {
+    const mission = new Mission();
+    mission.addRover(5, 5, 'N');
+    mission.addRover(5, 4, 'N');
+    mission.giveRoverInstructions('MLM', mission.rovers[1]);
+    expect(mission.getFinalRoverPositions()).to.equal('5 5 N \n 4 4 W');
   });
 
   it('lists final position of each rover in a single string', () => {

@@ -1,11 +1,12 @@
+
 const Rover = require('./rover');
 
 class Mission {
   constructor(instructions) {
     this.instructions = instructions;
     this.plateau = {
-      x: instructions === undefined ? 5 : instructions[0],
-      y: instructions === undefined ? 5 : instructions[2]
+      x: instructions === undefined ? 5 : Number(instructions[0]),
+      y: instructions === undefined ? 5 : Number(instructions[2])
     };
     this.rovers = [];
   }
@@ -25,7 +26,7 @@ class Mission {
       });
 
       for (let i = 0; i < this.rovers.length; i++) {
-        this.rovers[i].followInstructions(seperateCommands[i].slice(3));
+        this.giveRoverInstructions(seperateCommands[i].slice(3), this.rovers[i]);
       }
       return this.getFinalRoverPositions();
     }
@@ -56,6 +57,17 @@ class Mission {
       return 'ERROR: Imminent collision!';
     }
     else return 'FATAL ERROR';
+  }
+
+  giveRoverInstructions(commandStr, rover) {
+    if (typeof commandStr !== 'string') return 'invalid instructions';
+    const commandArr = commandStr.split('');
+    commandArr.forEach((command) => {
+      command = command.toUpperCase();
+      if (command === 'M') rover.move(this.plateau.x, this.plateau.y, this.rovers);
+      if (command === 'L' || command === 'R') rover.rotate(command);
+      else null;
+    });
   }
 
   getFinalRoverPositions() {

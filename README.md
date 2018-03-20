@@ -76,4 +76,15 @@ To test:
 
 ```npm test```
 
+# Improvements
+
+Proper error handling rather than hard coded error messages
+
+Further edge case testing
+
+Further features such as:
+  Allowing a rover to fall off the plateau which prevents other rovers from falling off at the same spot.
+  One crash allowed to happen which destroys the two squares on which it happens, resulting in a hole in the plateau which other rovers could fall through
+
+  A html render of the algorithm
 
